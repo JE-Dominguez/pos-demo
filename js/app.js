@@ -94,7 +94,11 @@ const mostrarLogin = () => {
   };
 };
 
-salir.onclick = () => sb.auth.signOut();
+salir.onclick = async () => {
+  const { error } = await sb.auth.signOut({ scope: "local" });
+  if (error) Util.toast(error.message, "error");
+  mostrarLogin();
+};
 
 sb.auth.onAuthStateChange((_evento, session) => {
   if (session) {

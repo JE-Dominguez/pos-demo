@@ -96,13 +96,16 @@ const mostrarLogin = () => {
 
 salir.onclick = () => sb.auth.signOut();
 
-sb.auth.onAuthStateChange(async (_evento, session) => {
+sb.auth.onAuthStateChange((_evento, session) => {
   if (session) {
     if (logueado) return;
     logueado = true;
     salir.hidden = false;
-    await actualizarMarca();
-    enrutar();
+    // Se ejecuta fuera del evento de Supabase para evitar que se bloquee
+    setTimeout(() => {
+      actualizarMarca();
+      enrutar();
+    }, 0);
   } else {
     mostrarLogin();
   }
